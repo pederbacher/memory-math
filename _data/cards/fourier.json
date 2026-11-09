@@ -1,0 +1,9 @@
+{
+  "name": "Fourier square wave",
+  "expression": "sin(x) + sin(3x)/3 + sin(5x)/5 + sin(7x)/7 + sin(9x)/9",
+  "tex": "\\displaystyle\\sum_{k=1}^{5}\\frac{\\sin((2k-1)x)}{2k-1}",
+  "xmin": "-2*pi",
+  "xmax": "2*pi",
+  "text": "The first five terms of the Fourier series of a square wave. Adding more sine waves makes the sum closer and closer to a square wave.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Fourier_series"
+}

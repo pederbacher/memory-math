@@ -1,0 +1,9 @@
+{
+  "name": "Exponential decay",
+  "expression": "exp(-x)",
+  "tex": "e^{-x}",
+  "xmin": 0,
+  "xmax": 5,
+  "text": "Exponential decay halves at a constant rate, like radioactive decay or a cooling cup of coffee.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Exponential_decay"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Decreasing line",
+  "expression": "1 - 4x",
+  "tex": "1-4x",
+  "xmin": -1,
+  "xmax": 1,
+  "text": "A linear function with slope -4 and intercept 1. The negative slope makes the line fall from left to right.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Linear_function_(calculus)"
+}

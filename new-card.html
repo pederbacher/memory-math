@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>New card · Memory Math</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script>window.MathJax = { tex: { packages: { '[-]': ['noundefined'] } }, svg: { fontCache: 'none' }, startup: { typeset: false } };</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjs@13.2.0/lib/browser/math.js"></script>
+  <script type="module" src="assets/new-card.js"></script>
+</head>
+<body>
+  <header class="site">
+    <a class="brand" href="./">Memory Math</a>
+    <nav>
+      <a href="./">Cards</a>
+      <a href="collections.html">Collections</a>
+      <a href="new-card.html" aria-current="page">New card</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>New card</h1>
+    <p class="lead">The expression is used to draw the graph, and the LaTeX is what's shown on the other face.
+      Saving opens GitHub with the card file filled in, ready to commit.</p>
+
+    <div class="layout-2">
+      <form id="form" class="panel form-grid" novalidate>
+        <div class="row">
+          <label><span class="label">Name</span>
+            <input id="name" required placeholder="e.g. Hyperbolic tangent" autocomplete="off"></label>
+          <label><span class="label">ID (file name)</span>
+            <input id="id" required placeholder="e.g. tanh" autocomplete="off" spellcheck="false">
+            <span class="hint">Lowercase letters, digits and dashes.</span></label>
+        </div>
+
+        <label><span class="label">Expression to plot, in x</span>
+          <input id="expression" required placeholder="e.g. tanh(x)" autocomplete="off" spellcheck="false">
+          <span class="hint">math.js syntax: <code>sin(x)</code>, <code>x^2</code>, <code>exp(-x)</code>, <code>abs(x)</code>, <code>pi</code>, <code>x &lt; 0 ? 0 : x</code>.</span>
+          <p id="expressionError" class="field-error"></p></label>
+
+        <label><span class="label">Expression as LaTeX (shown on the card)</span>
+          <input id="tex" required placeholder="e.g. \tanh x" autocomplete="off" spellcheck="false">
+          <p id="texError" class="field-error"></p></label>
+
+        <div class="row">
+          <label><span class="label">x from</span>
+            <input id="xmin" required value="-1" placeholder="e.g. -2*pi" spellcheck="false"></label>
+          <label><span class="label">x to</span>
+            <input id="xmax" required value="1" placeholder="e.g. 2*pi" spellcheck="false"></label>
+        </div>
+        <p id="rangeError" class="field-error"></p>
+
+        <details>
+          <summary class="small">More plot settings (y range, ticks, equal axes)</summary>
+          <div class="form-grid" style="margin-top: .75rem">
+            <div class="row">
+              <label><span class="label">y from (optional)</span><input id="ymin" spellcheck="false"></label>
+              <label><span class="label">y to (optional)</span><input id="ymax" spellcheck="false"></label>
+            </div>
+            <span class="hint" style="margin-top: -.5rem">Set both to cut off asymptotes, e.g. -5 and 5 for tan(x).</span>
+            <label><span class="label">y-axis ticks (optional)</span>
+              <input id="yticks" placeholder="e.g. 0, 10000, 20000" spellcheck="false"></label>
+            <label class="small"><input type="checkbox" id="equalAspect"> Same scale on both axes (e.g. for a circle)</label>
+          </div>
+        </details>
+
+        <label><span class="label">Explanation</span>
+          <textarea id="text" rows="4" placeholder="A sentence or two about the function"></textarea></label>
+
+        <label><span class="label">Wikipedia link</span>
+          <input id="wikipedia" type="url" placeholder="https://en.wikipedia.org/wiki/..." spellcheck="false"></label>
+
+        <div class="form-actions">
+          <button id="save" class="primary" type="submit">Save to GitHub</button>
+          <button id="copy" type="button">Copy file contents</button>
+        </div>
+        <div id="msg" class="msg" role="status"></div>
+      </form>
+
+      <aside class="panel preview" aria-label="Preview">
+        <h2>Preview</h2>
+        <div class="faces">
+          <div class="tile" id="pGraph"></div>
+          <div class="tile" id="pExpression"></div>
+        </div>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cards · Memory Math</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script>window.MathJax = { tex: { packages: { '[-]': ['noundefined'] } }, svg: { fontCache: 'none' }, startup: { typeset: false } };</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjs@13.2.0/lib/browser/math.js"></script>
+  <script type="module" src="assets/cards.js"></script>
+</head>
+<body>
+  <header class="site screen-only">
+    <a class="brand" href="./">Memory Math</a>
+    <nav>
+      <a href="./" aria-current="page">Cards</a>
+      <a href="collections.html">Collections</a>
+      <a href="new-card.html">New card</a>
+    </nav>
+  </header>
+
+  <main class="screen-only">
+    <section id="draftbar" class="panel draftbar" hidden aria-label="Collection being edited">
+      <div class="draft-head">
+        <strong id="draftTitle">New collection</strong>
+        <span id="draftCount" class="muted"></span>
+      </div>
+      <div class="draft-fields">
+        <label><span class="label">ID (used in the link)</span>
+          <input id="dId" placeholder="e.g. trig-basics" autocomplete="off" spellcheck="false"></label>
+        <label><span class="label">Name</span>
+          <input id="dName" placeholder="e.g. Trigonometry basics" autocomplete="off"></label>
+        <label class="wide"><span class="label">Description</span>
+          <textarea id="dDesc" rows="2"></textarea></label>
+      </div>
+      <div class="draft-actions">
+        <button id="dSave" class="primary">Save to GitHub</button>
+        <button id="dShow">Show only these cards</button>
+        <button id="dClose">Stop editing</button>
+      </div>
+      <div id="dMsg" class="msg" role="status"></div>
+    </section>
+
+    <h1>Cards</h1>
+    <p class="lead">Each card has two faces: the graph and the expression. Click a face to read about the function.
+      <span id="startHint">Tick cards to put them in a new collection.</span></p>
+
+    <div class="toolbar">
+      <label class="grow"><span class="label">Filter (regular expression)</span>
+        <input id="q" type="search" placeholder="e.g. sin|cos  or  \frac" autocomplete="off" spellcheck="false"></label>
+      <label><span class="label">Search in</span>
+        <select id="scope">
+          <option value="all">Names, text and math</option>
+          <option value="name">Names only</option>
+          <option value="text">Text and math only</option>
+        </select></label>
+      <label class="check"><input type="checkbox" id="onlySelected"> Ticked only</label>
+      <div class="actions">
+        <button id="print" title="Graphs on page 1, expressions on page 2">Print overview</button>
+      </div>
+    </div>
+    <p id="qError" class="error" hidden></p>
+    <p id="count" class="muted small"></p>
+    <div id="cards" class="cards"><p class="empty">Loading cards…</p></div>
+  </main>
+
+  <div id="printArea" class="print-only"></div>
+  <dialog id="detail"></dialog>
+</body>
+</html>

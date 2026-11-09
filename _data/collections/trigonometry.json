@@ -1,0 +1,12 @@
+{
+  "name": "Trigonometry",
+  "description": "Sine, cosine and tangent, and what you can build from sine waves.",
+  "cards": [
+    "sin",
+    "cos",
+    "tan",
+    "sinc",
+    "damped",
+    "fourier"
+  ]
+}

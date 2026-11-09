@@ -1,0 +1,15 @@
+{
+  "name": "Topologist's sine",
+  "expression": "x * sin(1/x)",
+  "tex": "x\\sin\\frac{1}{x}",
+  "xmin": -0.3,
+  "xmax": 0.3,
+  "yticks": [
+    -0.2,
+    -0.1,
+    0,
+    0.1
+  ],
+  "text": "It oscillates infinitely fast near zero, but the factor x squeezes the oscillations so the function goes to 0.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Topologist%27s_sine_curve"
+}

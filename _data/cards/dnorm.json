@@ -1,0 +1,9 @@
+{
+  "name": "Normal density",
+  "expression": "exp(-x^2/2) / sqrt(2*pi)",
+  "tex": "\\frac{1}{\\sigma\\sqrt{2\\pi}}\\, e^{-\\frac{(x - \\mu)^2}{2 \\sigma^2}}",
+  "xmin": -4,
+  "xmax": 4,
+  "text": "The bell curve: the probability density of the normal distribution. The graph shows the standard normal, with mean μ = 0 and standard deviation σ = 1.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Normal_distribution"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Tangent",
+  "expression": "tan(x)",
+  "tex": "\\tan x",
+  "xmin": "-2*pi",
+  "xmax": "2*pi",
+  "ymin": -5,
+  "ymax": 5,
+  "text": "The tangent is sin(x)/cos(x). It has period π and vertical asymptotes wherever cos(x) = 0.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Trigonometric_functions"
+}

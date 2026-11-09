@@ -1,0 +1,9 @@
+{
+  "name": "Square root",
+  "expression": "sqrt(x)",
+  "tex": "\\sqrt{x}",
+  "xmin": 0,
+  "xmax": 4,
+  "text": "The square root is the inverse of x^2 for x ≥ 0. It rises steeply at first and then flattens out.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Square_root"
+}

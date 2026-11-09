@@ -1,0 +1,9 @@
+{
+  "name": "Floor",
+  "expression": "floor(x)",
+  "tex": "\\lfloor x \\rfloor",
+  "xmin": -2.5,
+  "xmax": 2.5,
+  "text": "The floor function rounds down to the nearest integer, so its graph is a staircase that jumps at every integer.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Floor_and_ceiling_functions"
+}

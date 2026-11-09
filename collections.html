@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Collections · Memory Math</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script>window.MathJax = { tex: { packages: { '[-]': ['noundefined'] } }, svg: { fontCache: 'none' }, startup: { typeset: false } };</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjs@13.2.0/lib/browser/math.js"></script>
+  <script type="module" src="assets/collections.js"></script>
+</head>
+<body>
+  <header class="site">
+    <a class="brand" href="./">Memory Math</a>
+    <nav>
+      <a href="./">Cards</a>
+      <a href="collections.html" aria-current="page">Collections</a>
+      <a href="new-card.html">New card</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Collections</h1>
+    <p class="lead">A collection is a set of cards to play with, print or order as a photo product.</p>
+
+    <div class="layout-2">
+      <section>
+        <div class="toolbar">
+          <label class="grow"><span class="label">Filter (regular expression)</span>
+            <input id="q" type="search" placeholder="Search names and descriptions" autocomplete="off" spellcheck="false"></label>
+        </div>
+        <p id="qError" class="error" hidden></p>
+        <div id="list" class="collection-list"><p class="empty">Loading collections…</p></div>
+      </section>
+
+      <aside>
+        <form id="form" class="panel form-grid" novalidate>
+          <h2 style="margin: 0">New collection</h2>
+          <label><span class="label">ID (used in the link)</span>
+            <input id="id" placeholder="e.g. trig-basics" autocomplete="off" spellcheck="false">
+            <span class="hint">Lowercase letters, digits and dashes.</span></label>
+          <label><span class="label">Name</span>
+            <input id="name" placeholder="e.g. Trigonometry basics" autocomplete="off"></label>
+          <label><span class="label">Description</span>
+            <textarea id="description" rows="3"></textarea></label>
+          <div class="form-actions"><button class="primary" type="submit">Choose cards →</button></div>
+          <p id="msg" class="msg error" role="status"></p>
+        </form>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>

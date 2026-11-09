@@ -1,0 +1,9 @@
+{
+  "name": "Triangle function",
+  "expression": "max(1 - abs(x), 0)",
+  "tex": "\\begin{cases} 1 - |x|, & |x| < 1; \\\\ 0 & \\text{otherwise}. \\end{cases}",
+  "xmin": -1.5,
+  "xmax": 1.5,
+  "text": "A triangular peak of height 1 and zero outside [-1, 1]. It is used as a kernel in smoothing and for linear interpolation.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Triangular_function"
+}

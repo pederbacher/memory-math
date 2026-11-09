@@ -1,0 +1,9 @@
+{
+  "name": "Sinc",
+  "expression": "x == 0 ? 1 : sin(x)/x",
+  "tex": "\\begin{cases} \\dfrac{ \\sin(x) } x, & x \\neq 0 \\\\ 1, & x = 0\\end{cases}",
+  "xmin": "-5*pi",
+  "xmax": "5*pi",
+  "text": "The sinc function is a sine wave that dies out as 1/x. Its value at 0 is defined as 1, the limit of sin(x)/x. It is central in signal processing.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Sinc_function"
+}

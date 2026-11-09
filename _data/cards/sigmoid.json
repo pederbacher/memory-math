@@ -1,0 +1,9 @@
+{
+  "name": "Sigmoid",
+  "expression": "1 / (1 + exp(-x))",
+  "tex": "\\frac{1}{1+e^{-x}}",
+  "xmin": -6,
+  "xmax": 6,
+  "text": "The logistic function squeezes any number into the interval from 0 to 1. It is used in logistic regression and neural networks.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Logistic_function"
+}

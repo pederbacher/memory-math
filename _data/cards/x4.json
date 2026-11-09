@@ -1,0 +1,9 @@
+{
+  "name": "Fourth power",
+  "expression": "x^4",
+  "tex": "x^4",
+  "xmin": -1,
+  "xmax": 1,
+  "text": "Like x^2 it is even and has its minimum at the origin, but it is flatter near zero and steeper towards -1 and 1.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Quartic_function"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "Gamma function",
+  "expression": "gamma(x)",
+  "tex": "\\Gamma(x)",
+  "xmin": -4,
+  "xmax": 4,
+  "ymin": -6,
+  "ymax": 6,
+  "text": "The gamma function extends the factorial to real numbers: Γ(n) = (n-1)! for positive integers. It has poles at 0, -1, -2, ...",
+  "wikipedia": "https://en.wikipedia.org/wiki/Gamma_function"
+}

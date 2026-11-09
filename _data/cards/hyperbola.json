@@ -1,0 +1,11 @@
+{
+  "name": "Reciprocal",
+  "expression": "1/x",
+  "tex": "\\frac{1}{x}",
+  "xmin": -3,
+  "xmax": 3,
+  "ymin": -5,
+  "ymax": 5,
+  "text": "The reciprocal 1/x is a hyperbola. It is undefined at x = 0, where it jumps from minus infinity to plus infinity.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Multiplicative_inverse"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "Natural logarithm",
+  "expression": "log(x)",
+  "tex": "\\log{x}",
+  "xmin": 0,
+  "xmax": 2,
+  "text": "The natural logarithm is the inverse of the exponential function. It is only defined for x > 0, goes to minus infinity at 0 and crosses zero at x = 1.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Natural_logarithm"
+}

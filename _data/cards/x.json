@@ -1,0 +1,9 @@
+{
+  "name": "Identity",
+  "expression": "x",
+  "tex": "x",
+  "xmin": -1,
+  "xmax": 1,
+  "text": "The identity function returns its input unchanged. Its graph is a straight line through the origin with slope 1.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Identity_function"
+}

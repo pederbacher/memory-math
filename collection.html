@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Collection · Memory Math</title>
+  <link rel="stylesheet" href="assets/style.css">
+  <script>window.MathJax = { tex: { packages: { '[-]': ['noundefined'] } }, svg: { fontCache: 'none' }, startup: { typeset: false } };</script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjs@13.2.0/lib/browser/math.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+  <script type="module" src="assets/collection.js"></script>
+</head>
+<body>
+  <header class="site screen-only">
+    <a class="brand" href="./">Memory Math</a>
+    <nav>
+      <a href="./">Cards</a>
+      <a href="collections.html" aria-current="page">Collections</a>
+      <a href="new-card.html">New card</a>
+    </nav>
+  </header>
+
+  <main id="main" class="screen-only"><p class="empty">Loading collection…</p></main>
+  <div id="printArea" class="print-only"></div>
+  <dialog id="detail"></dialog>
+</body>
+</html>

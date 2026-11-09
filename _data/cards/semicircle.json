@@ -1,0 +1,10 @@
+{
+  "name": "Semicircle",
+  "expression": "sqrt(1 - x^2)",
+  "tex": "\\sqrt{1-x^2}",
+  "xmin": -1,
+  "xmax": 1,
+  "equalAspect": true,
+  "text": "The upper half of the unit circle x^2 + y^2 = 1. Both axes use the same scale, so it is drawn as a real half circle.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Semicircle"
+}

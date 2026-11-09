@@ -1,0 +1,9 @@
+{
+  "name": "Cube",
+  "expression": "x^3",
+  "tex": "x^3",
+  "xmin": -1,
+  "xmax": 1,
+  "text": "The cube function is odd: it is negative for negative x and positive for positive x. It is flat at the origin, where it has an inflection point.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Cubic_function"
+}

@@ -1,0 +1,14 @@
+{
+  "name": "Powers and roots",
+  "description": "Polynomials, roots and the absolute value: a good first set for learning to read graphs.",
+  "cards": [
+    "x",
+    "xneg",
+    "x2",
+    "oneminusenegx2",
+    "x3",
+    "x4",
+    "sqrt",
+    "abs"
+  ]
+}

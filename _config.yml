@@ -1,0 +1,13 @@
+# GitHub Pages builds the site with Jekyll. The cards and collections are
+# JSON files in _data/, which data/*.json combine into one file each.
+title: Memory Math
+exclude:
+  - README.md
+  - prompts.md
+  - make.R
+  - generateImages.Rtex
+  - memory-expressions.mcfx
+  - memory-graphs.mcfx
+  - output
+  - cache
+  - genfig

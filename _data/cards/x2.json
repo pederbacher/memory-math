@@ -1,0 +1,9 @@
+{
+  "name": "Square",
+  "expression": "x^2",
+  "tex": "x^2",
+  "xmin": -1,
+  "xmax": 1,
+  "text": "The square function is a parabola with its minimum at the origin. It is even: x and -x give the same value.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Square_(algebra)"
+}

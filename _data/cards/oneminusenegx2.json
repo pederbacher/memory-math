@@ -1,0 +1,9 @@
+{
+  "name": "Inverted parabola",
+  "expression": "1 - x^2",
+  "tex": "1-x^2",
+  "xmin": -1,
+  "xmax": 1,
+  "text": "The parabola x^2 turned upside down and moved up by 1. It has its maximum 1 at x = 0 and crosses zero at x = -1 and x = 1.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Parabola"
+}

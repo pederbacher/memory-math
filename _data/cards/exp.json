@@ -1,0 +1,14 @@
+{
+  "name": "Exponential",
+  "expression": "exp(x)",
+  "tex": "\\exp{x}",
+  "xmin": -10,
+  "xmax": 10,
+  "yticks": [
+    0,
+    10000,
+    20000
+  ],
+  "text": "The exponential function grows faster than any polynomial. It is almost zero for negative x and explodes for large x.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Exponential_function"
+}

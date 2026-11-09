@@ -1,0 +1,15 @@
+{
+  "name": "Damped oscillation",
+  "expression": "exp(-x/4) * sin(2x)",
+  "tex": "e^{-x/4}\\sin(2x)",
+  "xmin": 0,
+  "xmax": 15,
+  "yticks": [
+    -0.4,
+    0,
+    0.4,
+    0.8
+  ],
+  "text": "A sine wave multiplied by a decaying exponential, like a spring or pendulum slowing down because of friction.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Damping"
+}

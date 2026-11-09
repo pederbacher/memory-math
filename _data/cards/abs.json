@@ -1,0 +1,9 @@
+{
+  "name": "Absolute value",
+  "expression": "abs(x)",
+  "tex": "\\lvert x \\rvert",
+  "xmin": -2,
+  "xmax": 2,
+  "text": "The absolute value is the distance from zero. Its graph is a V with a sharp corner at the origin, where it has no derivative.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Absolute_value"
+}
