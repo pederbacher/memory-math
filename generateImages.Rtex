@@ -1,0 +1,402 @@
+%% LyX 2.0.3 created this file.  For more info, see http://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass{article}
+\usepackage[sc]{mathpazo}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2.5cm,bmargin=2.5cm,lmargin=2.5cm,rmargin=2.5cm}
+\setcounter{secnumdepth}{2}
+\setcounter{tocdepth}{2}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage[unicode=true,pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=false,pdfborder={0 0 1},backref=false,colorlinks=false]
+ {hyperref}
+\hypersetup{
+ pdfstartview={XYZ null null 1}}
+\begin{document}
+%% begin.rcode setup, include=FALSE, cache=FALSE
+% library(knitr)
+% # final=FALSE: quick preview with pdf graphs and the expressions written in the document.
+% # This is the default, e.g. when compiled on Overleaf.
+% # final=TRUE: tikz figures and png files in output/ (slow). Set in make.R
+% if(!exists('final')) final <- FALSE
+% # Output folders for the card images: one set with graphs, one with expressions.
+% # A card pair gets the same file name (the chunk label) in both folders.
+% outdir <- 'output'
+% pngres <- 300
+% # White frame around each figure, in inches: added as outer margin, the figure grows by 2*pngmargin. Set in make.R
+% if(!exists('pngmargin')) pngmargin <- 0.25
+% if(final){
+%   dir.create(file.path(outdir, 'graphs'), recursive=TRUE, showWarnings=FALSE)
+%   dir.create(file.path(outdir, 'expressions'), recursive=TRUE, showWarnings=FALSE)
+% }
+% if(final){
+%   library(tikzDevice)
+%   # Use the same font in the figures as in the document, and amsmath for e.g. cases
+%   options(tikzLatexPackages=c(getOption('tikzLatexPackages'), '\\usepackage[sc]{mathpazo}\n', '\\usepackage{amsmath}\n'))
+% }
+% # Convert each figure to a square png: plot 1 in a chunk is the graph, plot 2 the expression
+% topng <- function(path, options){
+%   pdf <- sub('\\.tikz$', '.pdf', path)
+%   set <- c('graphs', 'expressions')[options$fig.cur]
+%   png <- file.path(outdir, set, options$label)
+%   system2('pdftoppm', c('-png', '-singlefile', '-r', pngres, shQuote(pdf), shQuote(png)))
+%   path
+% }
+% # set global chunk options (fig.width = fig.height gives square images)
+% opts_chunk$set(cache=TRUE, fig.path='genfig/', fig.align='center', fig.show='hold',
+%                fig.width=4+2*pngmargin, fig.height=4+2*pngmargin, out.width='0.45\\textwidth')
+% if(final){
+%   opts_chunk$set(dev='tikz', fig.process=topng)
+% }else{
+%   opts_chunk$set(dev='pdf', results='asis', echo=FALSE, fig.show='asis')
+% }
+% options(formatR.arrow=TRUE,width=90)
+%% end.rcode
+
+
+
+%% begin.rcode runplot, include=FALSE
+% # Draws the two cards from fun, funtext, xrng, yrng, yat, asp and funcex set in each card chunk
+% runplot <- function(){
+%   xseqlen <- 1000
+%   xseq <- seq(xrng[1], xrng[2], len=xseqlen)
+%   par(mar=c(1.9,1.9,0.6,0.6), mgp=c(3,0.75,0), cex=1.5, omi=rep(pngmargin,4))
+%   yseq <- fun(xseq)
+%   # Break the line at asymptotes: drop points far outside the y range
+%   if(!is.null(yrng)) yseq[yseq < yrng[1]-diff(yrng) | yseq > yrng[2]+diff(yrng)] <- NA
+%   plot(xseq, yseq, type='l', xlab='', ylab='', lwd=4, axes=FALSE, asp=asp, ylim=yrng)
+%   axis(1, lwd=2)
+%   axis(2, at=yat, lwd=2)
+%   box(lwd=2)
+%   if(final){
+%     par(mar=c(2,2,2,2), xaxt='n', yaxt='n', bty='n', xpd=NA)
+%     plot(c(0,1), c(0,1), type='n', xlab='', ylab='')
+%     # newlines would make text() split the math into separate lines
+%     text(0.5, 0.5, gsub('\n', ' ', funtext), cex=funcex)
+%   }else{
+%     cat('\\begin{center}\\Huge', funtext, '\\end{center}\n')
+%   }
+% }
+%% end.rcode
+
+
+%% begin.rcode x
+% fun <- function(x){ x }
+% funtext <-        '$x$'
+% xrng <- c(-1,1)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+%% begin.rcode xneg
+% fun <- function(x){ 1 - 4*x }
+% funtext <-        '$1-4x$'
+% xrng <- c(-1,1)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+%% begin.rcode x2
+% fun <- function(x){ x^2 }
+% funtext <-        '$x^2$'
+% xrng <- c(-1,1)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode oneminusenegx2
+% fun <- function(x){ 1-x^2 }
+% funtext <-        '$1-x^2$'
+% xrng <- c(-1,1)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+%% begin.rcode x3
+% fun <- function(x){ x^3 }
+% funtext <-        '$x^3$'
+% xrng <- c(-1,1)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+%% begin.rcode x4
+% fun <- function(x){ x^4 }
+% funtext <-        '$x^4$'
+% xrng <- c(-1,1)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+%% begin.rcode sin
+% fun <- function(x){ sin(x) }
+% funtext <-        '$\\sin{x}$'
+% xrng <- c(-2*pi,2*pi)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode log
+% fun <- function(x){ log(x) }
+% funtext <-       '$\\log{x}$'
+% xrng <- c(0,2)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode exp
+% fun <- function(x){ exp(x) }
+% funtext <-       '$\\exp{x}$'
+% xrng <- c(-10,10)
+% yrng <- NULL
+% yat <- c(0, 10000, 20000)
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode dnorm
+% fun <- function(x){ dnorm(x) }
+% funtext <-       '$\\frac{1}{\\sigma\\sqrt{2\\pi}}\\, e^{-\\frac{(x - \\mu)^2}{2 \\sigma^2}}$'
+% xrng <- c(-4,4)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 3
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode cos
+% fun <- function(x){ cos(x) }
+% funtext <-        '$\\cos{x}$'
+% xrng <- c(-2*pi,2*pi)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+
+%% Too close to x^4, so not run (eval=FALSE, include=FALSE)
+%% begin.rcode cosh, eval=FALSE, include=FALSE
+% fun <- function(x){ cosh(x) }
+% funtext <-        '$\\cosh{x}$'
+% xrng <- c(-2*pi,2*pi)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode sinc
+% fun <- function(x){ ifelse(x == 0, 1, sin(x)/x) }
+% funtext <- '$\\begin{cases} \\dfrac{ \\sin(x) } x, & x \\neq 0 \\\\ 1, & x = 0\\end{cases}$'
+% xrng <- c(-5*pi,5*pi)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 2.3
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode trikernel
+% fun <- function(x){sapply(x, function(xx){ max(1-abs(xx),0) })}
+% funtext <- '$
+% \\begin{cases}
+% 1 - |x|, & |x| < 1; \\\\
+% 0        & \\text{otherwise}. \\\\
+% \\end{cases}
+% $'
+% xrng <- c(-1.5,1.5)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 2.05
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode sigmoid
+% fun <- function(x){ 1/(1+exp(-x)) }
+% funtext <- '$\\frac{1}{1+e^{-x}}$'
+% xrng <- c(-6,6)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode damped
+% fun <- function(x){ exp(-x/4)*sin(2*x) }
+% funtext <- '$e^{-x/4}\\sin(2x)$'
+% xrng <- c(0,15)
+% yrng <- NULL
+% yat <- c(-0.4, 0, 0.4, 0.8)
+% asp <- NA
+% funcex <- 3
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode floor
+% fun <- function(x){ floor(x) }
+% funtext <- '$\\lfloor x \\rfloor$'
+% xrng <- c(-2.5,2.5)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode fourier
+% fun <- function(x){ rowSums(sapply(1:5, function(k){ sin((2*k-1)*x)/(2*k-1) })) }
+% funtext <- '$\\displaystyle\\sum_{k=1}^{5}\\frac{\\sin((2k-1)x)}{2k-1}$'
+% xrng <- c(-2*pi,2*pi)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 2.3
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode sqrt
+% fun <- function(x){ sqrt(x) }
+% funtext <- '$\\sqrt{x}$'
+% xrng <- c(0,4)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode abs
+% fun <- function(x){ abs(x) }
+% funtext <- '$\\lvert x \\rvert$'
+% xrng <- c(-2,2)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode expdecay
+% fun <- function(x){ exp(-x) }
+% funtext <- '$e^{-x}$'
+% xrng <- c(0,5)
+% yrng <- NULL
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode semicircle
+% fun <- function(x){ sqrt(1-x^2) }
+% funtext <- '$\\sqrt{1-x^2}$'
+% xrng <- c(-1,1)
+% yrng <- NULL
+% yat <- NULL
+% # asp=1: same scale on both axes, so it is drawn as a real half circle
+% asp <- 1
+% funcex <- 3.5
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode topsine
+% fun <- function(x){ x*sin(1/x) }
+% funtext <- '$x\\sin\\frac{1}{x}$'
+% xrng <- c(-0.3,0.3)
+% yrng <- NULL
+% yat <- c(-0.2, -0.1, 0, 0.1)
+% asp <- NA
+% funcex <- 4
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode hyperbola
+% fun <- function(x){ 1/x }
+% funtext <- '$\\frac{1}{x}$'
+% xrng <- c(-3,3)
+% yrng <- c(-5,5)
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode tan
+% fun <- function(x){ tan(x) }
+% funtext <- '$\\tan x$'
+% xrng <- c(-2*pi,2*pi)
+% yrng <- c(-5,5)
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+
+%% begin.rcode gamma
+% # gamma() warns at the poles (0, -1, -2, ...)
+% fun <- function(x){ suppressWarnings(gamma(x)) }
+% funtext <- '$\\Gamma(x)$'
+% xrng <- c(-4,4)
+% yrng <- c(-6,6)
+% yat <- NULL
+% asp <- NA
+% funcex <- 5
+% runplot()
+%% end.rcode
+
+
+
+\end{document}
