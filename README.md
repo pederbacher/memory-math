@@ -13,14 +13,16 @@ It is a static site on GitHub Pages, with no server or database. The repository 
 
 GitHub Pages runs Jekyll, which combines these files into `data/cards.json` and `data/collections.json` that the pages load. The graphs are drawn in the browser with [math.js](https://mathjs.org/), and the expressions are typeset with [MathJax](https://www.mathjax.org/).
 
-### Adding cards and collections
+### Adding and changing cards and collections
 
-The **New card** page and the collection editor on the **Cards** page don't need a login or token. Saving opens GitHub's "new file" page with the file filled in:
+The **Edit card** page and the collection editor on the **Cards** page don't need a login or token. To change a card, tick it on the Cards page and click **Edit card**, or pick it on the Edit card page. Saving with the same ID overwrites the card, and a new ID saves it as a new card.
+
+Saving something new opens GitHub's "new file" page with the file filled in:
 
 - If you have write access, click **Commit changes**. The site updates about a minute later.
 - If you don't, GitHub offers to make a pull request instead, which the owner can accept or reject.
 
-GitHub can't prefill an edit to an existing file. So when you change a saved collection, the new contents are copied to the clipboard and the GitHub editor opens, ready for you to paste.
+GitHub can't prefill an edit to an existing file. So when you change a saved card or collection, the new contents are copied to the clipboard and the GitHub editor opens, ready for you to paste.
 
 ### Card file format
 

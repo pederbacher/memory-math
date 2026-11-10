@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>New card · Memory Math</title>
+  <title>Edit card · Memory Math</title>
   <link rel="stylesheet" href="assets/style.css">
   <script>window.MathJax = { tex: { packages: { '[-]': ['noundefined'] } }, svg: { fontCache: 'none' }, startup: { typeset: false } };</script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjs@13.2.0/lib/browser/math.js"></script>
-  <script type="module" src="assets/new-card.js"></script>
+  <script type="module" src="assets/edit-card.js"></script>
 </head>
 <body>
   <header class="site">
@@ -16,17 +16,21 @@
     <nav>
       <a href="./">Cards</a>
       <a href="collections.html">Collections</a>
-      <a href="new-card.html" aria-current="page">New card</a>
+      <a href="edit-card.html" aria-current="page">Edit card</a>
     </nav>
   </header>
 
   <main>
-    <h1>New card</h1>
-    <p class="lead">The expression is used to draw the graph, and the LaTeX is what's shown on the other face.
-      Saving opens GitHub with the card file filled in, ready to commit.</p>
+    <h1>Edit card</h1>
+    <p class="lead">Change a card, or make a new one. The expression is used to draw the graph, and the LaTeX
+      is what's shown on the other face. Saving opens GitHub, ready to commit.</p>
 
     <div class="layout-2">
       <form id="form" class="panel form-grid" novalidate>
+        <label><span class="label">Card</span>
+          <select id="pick"><option value="">New card</option></select></label>
+        <p id="mode" class="small muted" style="margin: -.4rem 0 0"></p>
+
         <div class="row">
           <label><span class="label">Name</span>
             <input id="name" required placeholder="e.g. Hyperbolic tangent" autocomplete="off"></label>
@@ -78,8 +82,7 @@
           <input id="wikipedia" type="url" placeholder="https://en.wikipedia.org/wiki/..." spellcheck="false"></label>
 
         <div class="form-actions">
-          <button id="save" class="primary" type="submit">Save to GitHub</button>
-          <button id="copy" type="button">Copy file contents</button>
+          <button id="save" class="primary" type="submit">Save as new card</button>
         </div>
         <div id="msg" class="msg" role="status"></div>
       </form>

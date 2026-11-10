@@ -62,6 +62,8 @@ function renderCards() {
       const ids = shiftHeld && lastClicked ? rangeBetween(lastClicked, card.id) : [card.id];
       toggleCards(ids, e.target.checked);
       lastClicked = card.id;
+      if (e.target.checked) lastTicked = card.id;
+      updateEditButton();
       shiftHeld = false;
     });
     pairs.set(card.id, el);
@@ -114,6 +116,29 @@ $('print').addEventListener('click', () => {
   window.print();
 });
 
+// ---------------------------------------------------------------- edit card
+
+// Opens the card ticked most recently; after a reload, the last one in the list
+let lastTicked = null;
+
+function cardToEdit() {
+  const ticked = draft?.cards || [];
+  if (lastTicked && ticked.includes(lastTicked)) return lastTicked;
+  return ticked.at(-1) || null;
+}
+
+function updateEditButton() {
+  const id = cardToEdit();
+  const card = cards.find(c => c.id === id);
+  $('editCard').disabled = !card;
+  $('editCard').title = card ? `Edit ${card.name}` : 'Tick a card to edit it';
+}
+
+$('editCard').addEventListener('click', () => {
+  const id = cardToEdit();
+  if (id) location.href = `edit-card.html?id=${encodeURIComponent(id)}`;
+});
+
 // ---------------------------------------------------------------- draft collection
 
 // Shift-click: every card shown from the last clicked one to this one
@@ -148,6 +173,7 @@ function renderDraft() {
     el.classList.toggle('selected', chosen.has(id));
     el.querySelector('input').checked = chosen.has(id);
   }
+  updateEditButton();
   if (!draft) return;
   $('draftTitle').textContent = draft.isNew ? 'New collection' : `Editing collection: ${draft.name}`;
   $('draftCount').textContent = `${draft.cards.length} card${draft.cards.length === 1 ? '' : 's'} ticked`;
