@@ -6,6 +6,13 @@
   "xmax": "2*pi",
   "ymin": -5,
   "ymax": 5,
+  "xticks": [
+    "-2*pi",
+    "-pi",
+    0,
+    "pi",
+    "2*pi"
+  ],
   "text": "The tangent is sin(x)/cos(x). It has period π and vertical asymptotes wherever cos(x) = 0.",
   "wikipedia": "https://en.wikipedia.org/wiki/Trigonometric_functions"
 }
