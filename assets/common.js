@@ -104,19 +104,38 @@ export function setDraft(d) {
 // ---------------------------------------------------------------- drawing
 
 const SIZE = 400;
-const M = { left: 62, right: 16, top: 16, bottom: 62 };
+const M = { left: 50, right: 12, top: 12, bottom: 50 };
 const FONT = "'Palatino Linotype', Palatino, 'TeX Gyre Pagella', 'URW Palladio L', serif";
 
-function niceTicks(lo, hi, n = 4) {
+// Ticks at round numbers (steps of 1, 2, 2.5 or 5 times a power of ten),
+// choosing the step that gives closest to n ticks; on a tie, the fewer.
+// Steps of 1.5 or 7.5 are used only when they give exactly n, e.g. -3 to 3.
+function niceTicks(lo, hi, n = 5) {
   const span = hi - lo;
   if (!(span > 0)) return [lo];
-  const mag = 10 ** Math.floor(Math.log10(span / n));
-  const step = [1, 2, 5, 10].map(f => f * mag).find(s => span / s <= n);
-  const ticks = [];
-  for (let t = Math.ceil(lo / step - 1e-9) * step; t <= hi + step * 1e-9; t += step) {
-    ticks.push(+t.toPrecision(12));
+  const ticksFor = step => {
+    const out = [];
+    for (let i = Math.ceil(lo / step - 1e-9); i * step <= hi + step * 1e-9; i++) out.push(+(i * step).toPrecision(12));
+    return out;
+  };
+  const k = Math.floor(Math.log10(span / n));
+  let best = null;
+  for (const p of [k - 1, k, k + 1]) {
+    for (const m of [1, 2, 2.5, 5]) {
+      const t = ticksFor(m * 10 ** p);
+      if (!best || Math.abs(t.length - n) < Math.abs(best.length - n)
+        || (Math.abs(t.length - n) === Math.abs(best.length - n) && t.length < best.length)) best = t;
+    }
   }
-  return ticks;
+  if (best.length !== n) {
+    for (const p of [k - 1, k, k + 1]) {
+      for (const m of [1.5, 7.5]) {
+        const t = ticksFor(m * 10 ** p);
+        if (t.length === n) return t;
+      }
+    }
+  }
+  return best;
 }
 
 function fmt(v) {
@@ -191,14 +210,14 @@ export function graphSVG(card) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${SIZE} ${SIZE}" width="${SIZE}" height="${SIZE}">`
     + `<rect width="${SIZE}" height="${SIZE}" fill="#fff"/>`
     + `<svg x="${M.left}" y="${M.top}" width="${pw}" height="${ph}" viewBox="${M.left} ${M.top} ${pw} ${ph}" overflow="hidden">`
-    + `<path d="${d}" fill="none" stroke="#000" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/></svg>`
-    + `<rect x="${M.left}" y="${M.top}" width="${pw}" height="${ph}" fill="none" stroke="#000" stroke-width="2.5"/>`
-    + `<g stroke="#000" stroke-width="2.5">`
+    + `<path d="${d}" fill="none" stroke="#000" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/></svg>`
+    + `<rect x="${M.left}" y="${M.top}" width="${pw}" height="${ph}" fill="none" stroke="#000" stroke-width="2"/>`
+    + `<g stroke="#000" stroke-width="2">`
     + xt.map(t => `<line x1="${sx(t).toFixed(1)}" x2="${sx(t).toFixed(1)}" y1="${bottom}" y2="${bottom + 8}"/>`).join('')
     + yt.map(t => `<line x1="${M.left - 8}" x2="${M.left}" y1="${sy(t).toFixed(1)}" y2="${sy(t).toFixed(1)}"/>`).join('')
     + `</g><g font-family="${FONT}" font-size="28" fill="#000">`
-    + xt.map(t => text(sx(t), bottom + 36, t)).join('')
-    + yt.map(t => text(M.left - 18, sy(t), t, `transform="rotate(-90 ${(M.left - 18).toFixed(1)} ${sy(t).toFixed(1)})"`)).join('')
+    + xt.map(t => text(sx(t), bottom + 34, t)).join('')
+    + yt.map(t => text(M.left - 16, sy(t), t, `transform="rotate(-90 ${(M.left - 16).toFixed(1)} ${sy(t).toFixed(1)})"`)).join('')
     + `</g></svg>`;
 }
 
