@@ -71,7 +71,7 @@ function render(col, cards, missing) {
 
   // Description and QR code, then one table: graph, expression, explanation
   $('printArea').innerHTML = `
-    <section class="print-page">
+    <section class="print-page long">
       <div class="print-head">
         <div>
           <h1>${escapeHTML(col.name)}</h1>
@@ -82,6 +82,8 @@ function render(col, cards, missing) {
       </div>
       <table class="print-table">
         <colgroup><col class="face"><col class="face"><col></colgroup>
+        <thead class="page-gap"><tr><td colspan="3"></td></tr></thead>
+        <tfoot class="page-gap"><tr><td colspan="3"></td></tr></tfoot>
         ${cards.map(c => `<tr>
           <td><div class="tile">${cardFaces(c).graph}</div></td>
           <td><div class="tile">${cardFaces(c).expression}</div></td>
