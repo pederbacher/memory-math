@@ -1,0 +1,9 @@
+{
+  "name": "The constant Pi",
+  "expression": "pi",
+  "tex": "\\pi",
+  "xmin": -10,
+  "xmax": 10,
+  "text": "Pi is a mathematical constant, approximately equal to 3.14159, that is the ratio of a circle's circumference to its diameter.",
+  "wikipedia": "https://en.wikipedia.org/wiki/Pi"
+}
