@@ -187,7 +187,7 @@ label { display: block; }
   font-weight: 600;
   min-height: 1.6rem;
 }
-.pair header label { display: flex; align-items: center; gap: .5rem; cursor: pointer; flex: 1; }
+.pair header label { display: flex; align-items: center; gap: .5rem; cursor: pointer; flex: 1; user-select: none; }
 .pair header input { width: 1.1rem; height: 1.1rem; }
 
 .faces { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
@@ -307,11 +307,13 @@ dialog h2 { margin: 0; padding-right: 2.5rem; }
   .print-head { display: grid; grid-template-columns: 1fr 30mm; gap: 6mm; margin-bottom: 5mm; }
   .print-head p { margin: 1mm 0 0; font-size: 10pt; }
   .print-head .qr { width: 30mm; border: none; padding: 0; }
-  .print-table { width: 100%; border-collapse: collapse; }
-  .print-table td { padding: 1.5mm; vertical-align: middle; width: 25%; }
+  /* Graph and expression columns 20% each, the explanation gets the rest */
+  .print-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+  .print-table col.face { width: 20%; }
+  .print-table tr { break-inside: avoid; }
+  .print-table td { padding: 1.5mm; vertical-align: middle; }
   .print-table .tile { border: .2mm solid #bbb; }
-  .explain { columns: 2; column-gap: 8mm; font-size: 9.5pt; }
-  .explain div { break-inside: avoid; margin-bottom: 3mm; }
+  .print-table .explain { padding-left: 4mm; font-size: 9.5pt; }
   .explain strong { font-family: var(--serif); font-size: 11pt; }
   .explain a { color: #000; word-break: break-all; font-size: 8pt; }
 }

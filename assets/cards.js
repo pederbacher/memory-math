@@ -48,7 +48,22 @@ function renderCards() {
         <button class="tile" aria-label="Expression of ${escapeHTML(card.name)}">${faces.expression}</button>
       </div>`;
     el.querySelectorAll('button.tile').forEach(b => b.addEventListener('click', () => openCardDialog($('detail'), card)));
-    el.querySelector('input').addEventListener('change', e => toggleCard(card.id, e.target.checked));
+    // Clicking the name or the box both end up here; note whether shift was held
+    const box = el.querySelector('input');
+    el.querySelector('header').addEventListener('click', e => { shiftHeld = e.shiftKey; }, true);
+    // Firefox ignores shift-clicks on a label, so toggle the box ourselves
+    el.querySelector('label').addEventListener('click', e => {
+      if (!e.shiftKey || e.target === box) return;
+      e.preventDefault();
+      box.checked = !box.checked;
+      box.dispatchEvent(new Event('change'));
+    });
+    box.addEventListener('change', e => {
+      const ids = shiftHeld && lastClicked ? rangeBetween(lastClicked, card.id) : [card.id];
+      toggleCards(ids, e.target.checked);
+      lastClicked = card.id;
+      shiftHeld = false;
+    });
     pairs.set(card.id, el);
     grid.append(el);
   }
@@ -101,12 +116,23 @@ $('print').addEventListener('click', () => {
 
 // ---------------------------------------------------------------- draft collection
 
-function toggleCard(id, on) {
+// Shift-click: every card shown from the last clicked one to this one
+let lastClicked = null, shiftHeld = false;
+
+function rangeBetween(fromId, toId) {
+  const shown = cards.filter(c => !pairs.get(c.id).hidden).map(c => c.id);
+  const a = shown.indexOf(fromId), b = shown.indexOf(toId);
+  if (a < 0 || b < 0) return [toId];
+  return shown.slice(Math.min(a, b), Math.max(a, b) + 1);
+}
+
+function toggleCards(ids, on) {
   if (!draft) {
     draft = { id: '', name: '', description: '', cards: [], isNew: true, saved: false };
   }
-  draft.cards = draft.cards.filter(c => c !== id);
-  if (on) draft.cards.push(id);
+  // Cards already ticked keep their place in the order
+  if (on) draft.cards.push(...ids.filter(id => !draft.cards.includes(id)));
+  else draft.cards = draft.cards.filter(c => !ids.includes(c));
   draft.saved = false;
   setDraft(draft);
   renderDraft();

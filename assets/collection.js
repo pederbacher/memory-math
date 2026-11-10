@@ -39,7 +39,7 @@ function render(col, cards, missing) {
         <p class="muted small">${cards.length} card${cards.length === 1 ? '' : 's'}</p>
         ${missing.length ? `<p class="error small">Missing cards (removed or renamed): ${missing.map(escapeHTML).join(', ')}</p>` : ''}
         <div class="form-actions">
-          <button id="print" class="primary">Print (2 pages)</button>
+          <button id="print" class="primary">Print</button>
           <button id="zip">Download images (ZIP)</button>
           <a class="button" href="./?edit=${encodeURIComponent(col.id)}">Add or remove cards</a>
           <a class="button" href="${fileUrl(`_data/collections/${col.id}.json`)}" target="_blank" rel="noopener">File on GitHub</a>
@@ -69,9 +69,7 @@ function render(col, cards, missing) {
   main.querySelectorAll('button.tile').forEach(b =>
     b.addEventListener('click', () => openCardDialog($('detail'), cards[b.dataset.i])));
 
-  // Page 1: description, QR code and the table of cards. Page 2: explanations.
-  const rows = [];
-  for (let i = 0; i < cards.length; i += 2) rows.push(cards.slice(i, i + 2));
+  // Description and QR code, then one table: graph, expression, explanation
   $('printArea').innerHTML = `
     <section class="print-page">
       <div class="print-head">
@@ -83,15 +81,14 @@ function render(col, cards, missing) {
         <div class="qr">${qr}</div>
       </div>
       <table class="print-table">
-        ${rows.map(r => `<tr>${r.map(c => `<td><div class="tile">${cardFaces(c).graph}</div></td><td><div class="tile">${cardFaces(c).expression}</div></td>`).join('')}</tr>`).join('')}
+        <colgroup><col class="face"><col class="face"><col></colgroup>
+        ${cards.map(c => `<tr>
+          <td><div class="tile">${cardFaces(c).graph}</div></td>
+          <td><div class="tile">${cardFaces(c).expression}</div></td>
+          <td class="explain"><strong>${escapeHTML(c.name)}</strong><br>${escapeHTML(c.text || '')}
+            ${safeUrl(c.wikipedia) ? `<br><a href="${escapeHTML(c.wikipedia)}">${escapeHTML(c.wikipedia)}</a>` : ''}</td>
+        </tr>`).join('')}
       </table>
-    </section>
-    <section class="print-page">
-      <h1>${escapeHTML(col.name)}: the functions</h1>
-      <div class="explain">
-        ${cards.map(c => `<div><strong>${escapeHTML(c.name)}</strong><br>${escapeHTML(c.text || '')}
-          ${safeUrl(c.wikipedia) ? `<br><a href="${escapeHTML(c.wikipedia)}">${escapeHTML(c.wikipedia)}</a>` : ''}</div>`).join('')}
-      </div>
     </section>`;
 
   $('print').addEventListener('click', () => window.print());
