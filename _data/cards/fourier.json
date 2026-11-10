@@ -4,6 +4,13 @@
   "tex": "\\displaystyle\\sum_{k=1}^{5}\\frac{\\sin((2k-1)x)}{2k-1}",
   "xmin": "-2*pi",
   "xmax": "2*pi",
+  "xticks": [
+    "-2*pi",
+    "-pi",
+    0,
+    "pi",
+    "2*pi"
+  ],
   "text": "The first five terms of the Fourier series of a square wave. Adding more sine waves makes the sum closer and closer to a square wave.",
   "wikipedia": "https://en.wikipedia.org/wiki/Fourier_series"
 }
