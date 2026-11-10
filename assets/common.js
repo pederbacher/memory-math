@@ -39,7 +39,7 @@ export function toNumber(v) {
 
 // The file contents for a card or collection, keys in a fixed order
 export function cardFile(c) {
-  const keys = ['name', 'expression', 'tex', 'xmin', 'xmax', 'ymin', 'ymax', 'yticks', 'equalAspect', 'text', 'wikipedia'];
+  const keys = ['name', 'expression', 'tex', 'xmin', 'xmax', 'ymin', 'ymax', 'xticks', 'yticks', 'equalAspect', 'text', 'wikipedia'];
   const out = {};
   for (const k of keys) if (c[k] !== undefined && c[k] !== null && c[k] !== '' && c[k] !== false) out[k] = c[k];
   return JSON.stringify(out, null, 2) + '\n';
@@ -138,7 +138,18 @@ function niceTicks(lo, hi, n = 5) {
   return best;
 }
 
+// Multiples of pi/4 (from xticks such as "pi/2") are labelled with π
+function piLabel(v) {
+  const q = Math.round(v / Math.PI * 4);
+  if (q === 0 || Math.abs(v - q * Math.PI / 4) > 1e-9) return null;
+  const g = q % 4 === 0 ? 4 : q % 2 === 0 ? 2 : 1;   // reduce q/4
+  const num = Math.abs(q / g), den = 4 / g;
+  return (q < 0 ? '−' : '') + (num === 1 ? '' : num) + 'π' + (den === 1 ? '' : '/' + den);
+}
+
 function fmt(v) {
+  const pi = piLabel(v);
+  if (pi) return pi;
   return String(+v.toPrecision(6)).replace('-', '−');
 }
 
@@ -199,7 +210,7 @@ export function graphSVG(card) {
     pen = true;
   }
 
-  const xt = niceTicks(x0, x1).filter(t => t >= x0 && t <= x1);
+  const xt = (card.xticks?.length ? card.xticks.map(toNumber) : niceTicks(x0, x1)).filter(t => t >= x0 && t <= x1);
   const yt = (card.yticks?.length ? card.yticks.map(toNumber) : niceTicks(y0, y1)).filter(t => t >= y0 && t <= y1);
   const bottom = M.top + ph;
   const text = (x, y, s, extra = '') =>

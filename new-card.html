@@ -53,15 +53,20 @@
         <p id="rangeError" class="field-error"></p>
 
         <details>
-          <summary class="small">More plot settings (y range, ticks, equal axes)</summary>
+          <summary class="small">More plot settings (y range, axis ticks, equal axes)</summary>
           <div class="form-grid" style="margin-top: .75rem">
             <div class="row">
               <label><span class="label">y from (optional)</span><input id="ymin" spellcheck="false"></label>
               <label><span class="label">y to (optional)</span><input id="ymax" spellcheck="false"></label>
             </div>
             <span class="hint" style="margin-top: -.5rem">Set both to cut off asymptotes, e.g. -5 and 5 for tan(x).</span>
-            <label><span class="label">y-axis ticks (optional)</span>
-              <input id="yticks" placeholder="e.g. 0, 10000, 20000" spellcheck="false"></label>
+            <div class="row">
+              <label><span class="label">x-axis ticks (optional)</span>
+                <input id="xticks" placeholder="e.g. -2*pi, -pi, 0, pi, 2*pi" spellcheck="false"></label>
+              <label><span class="label">y-axis ticks (optional)</span>
+                <input id="yticks" placeholder="e.g. 0, 10000, 20000" spellcheck="false"></label>
+            </div>
+            <span class="hint" style="margin-top: -.5rem">Without ticks, each axis gets about five at round numbers.</span>
             <label class="small"><input type="checkbox" id="equalAspect"> Same scale on both axes (e.g. for a circle)</label>
           </div>
         </details>

@@ -44,7 +44,7 @@ GitHub can't prefill an edit to an existing file. So when you change a saved col
 | `tex` | The expression shown on the card, in LaTeX |
 | `xmin`, `xmax` | The x range. A number, or an expression such as `"2*pi"` |
 | `ymin`, `ymax` | Optional y range. Points far outside it are dropped, which breaks the line at asymptotes |
-| `yticks` | Optional list of y-axis tick positions |
+| `xticks`, `yticks` | Optional lists of tick positions, numbers or expressions such as `"pi"`. Without them each axis gets about five ticks at round numbers |
 | `equalAspect` | Optional `true` for the same scale on both axes (for example the semicircle) |
 | `text`, `wikipedia` | The explanation and a link for reading more |
 

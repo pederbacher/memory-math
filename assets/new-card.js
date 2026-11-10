@@ -15,8 +15,14 @@ function limit(v) {
   return /^-?\d+(\.\d+)?$/.test(v) ? Number(v) : v;
 }
 
+// A list of ticks: split on commas, or on spaces when there are no commas
+function tickList(v) {
+  v = v.trim();
+  if (!v) return null;
+  return v.split(/[,;]/.test(v) ? /[,;]/ : /\s+/).map(limit).filter(t => t !== null);
+}
+
 function readForm() {
-  const ticks = $('yticks').value.trim();
   return {
     id: $('id').value.trim(),
     name: $('name').value.trim(),
@@ -26,7 +32,8 @@ function readForm() {
     xmax: limit($('xmax').value),
     ymin: limit($('ymin').value),
     ymax: limit($('ymax').value),
-    yticks: ticks ? ticks.split(/[,;\s]+/).filter(Boolean).map(limit) : null,
+    xticks: tickList($('xticks').value),
+    yticks: tickList($('yticks').value),
     equalAspect: $('equalAspect').checked,
     text: $('text').value.trim(),
     wikipedia: $('wikipedia').value.trim(),
@@ -44,7 +51,9 @@ function update() {
     $('pGraph').innerHTML = '';
   } else {
     try {
-      if (c.yticks) c.yticks.forEach(toNumber);
+      for (const t of [...(c.xticks || []), ...(c.yticks || [])]) {
+        try { toNumber(t); } catch { throw new Error(`Axis ticks: "${t}" is not a number`); }
+      }
       $('pGraph').innerHTML = graphSVG(c);
     } catch (e) {
       const isRange = /range|number/.test(e.message);
