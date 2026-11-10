@@ -4,6 +4,13 @@
   "tex": "\\cos{x}",
   "xmin": "-2*pi",
   "xmax": "2*pi",
+  "xticks": [
+    "-2*pi",
+    "-pi",
+    0,
+    "pi",
+    "2*pi"
+  ],
   "text": "The cosine function is the sine shifted by π/2. It is even and has its maximum 1 at x = 0.",
   "wikipedia": "https://en.wikipedia.org/wiki/Sine_and_cosine"
 }
