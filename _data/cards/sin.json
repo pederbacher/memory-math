@@ -4,6 +4,13 @@
   "tex": "\\sin{x}",
   "xmin": "-2*pi",
   "xmax": "2*pi",
+  "xticks": [
+    "-2*pi",
+    "-pi",
+    0,
+    "pi",
+    "2*pi"
+  ],
   "text": "The sine function is periodic with period 2π and oscillates between -1 and 1. It is odd and passes through the origin.",
   "wikipedia": "https://en.wikipedia.org/wiki/Sine_and_cosine"
 }
