@@ -24,6 +24,17 @@ Saving something new opens GitHub's "new file" page with the file filled in:
 
 GitHub can't prefill an edit to an existing file. So when you change a saved card or collection, the new contents are copied to the clipboard and the GitHub editor opens, ready for you to paste.
 
+### One-click saving with a GitHub token
+
+With a token, saving commits directly, with no GitHub page to click through. This also works for changing existing cards and collections. To set it up:
+
+1. Go to https://github.com/settings/personal-access-tokens/new (Settings → Developer settings → Personal access tokens → **Fine-grained tokens**).
+2. Give it a name and an expiration date. Set **Resource owner** to `pederbacher`, and under **Repository access** choose "Only select repositories" → **memory-math**.
+3. Under **Repository permissions**, set **Contents** to **Read and write**.
+4. Generate the token, copy it (it starts with `github_pat_`), and paste it on the site under **GitHub token** at the top right.
+
+The token is kept only in that browser, in local storage. Remove it on shared computers. Anyone with the token can change the files in this repository, so don't share it or put it anywhere else. When it expires, make a new one the same way.
+
 ### Card file format
 
 ```json

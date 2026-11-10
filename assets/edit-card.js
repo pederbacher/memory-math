@@ -4,7 +4,10 @@
 import {
   loadCards, mathReady, graphSVG, expressionSVG, errorSVG, toNumber, cardFile,
   newFileUrl, editFileUrl, copyText, escapeHTML, ID_PATTERN,
+  setupTokenUI, getToken, commitFile,
 } from './common.js';
+
+setupTokenUI();
 
 const $ = id => document.getElementById(id);
 let cards = new Map();
@@ -132,13 +135,41 @@ async function save(e) {
   if (problems.length) return message(problems.map(escapeHTML).join('<br>'), 'error');
   const content = cardFile(card);
   const after = 'The site shows the change about a minute after the commit.';
-  if (editing && card.id === editing.id) {
+  const overwrite = !!editing && card.id === editing.id;
+  if (getToken()) {
+    // One click: commit directly with the token
+    $('save').disabled = true;
+    message('Saving…');
+    try {
+      const url = await commitFile(`_data/cards/${card.id}.json`, content,
+        `${overwrite ? 'Update' : 'Add'} card ${card.name}`, { mustBeNew: !overwrite });
+      // From now on this page edits the saved card
+      const saved = { id: card.id, ...JSON.parse(content) };
+      if (!cards.has(saved.id)) {
+        $('pick').insertAdjacentHTML('beforeend', `<option value="${escapeHTML(saved.id)}">${escapeHTML(saved.name)}</option>`);
+      }
+      cards.set(saved.id, saved);
+      editing = saved;
+      $('pick').value = saved.id;
+      history.replaceState(null, '', `?id=${encodeURIComponent(saved.id)}`);
+      showMode();
+      dirty = false;
+      message(`Saved to GitHub (<a href="${escapeHTML(url)}" target="_blank" rel="noopener">see the commit</a>). ${after}`, 'ok');
+    } catch (err) {
+      message(escapeHTML(err.message), 'error');
+    } finally {
+      $('save').disabled = false;
+    }
+    return;
+  }
+  if (overwrite) {
     // GitHub can't prefill an edit: copy first (the clipboard needs this tab focused)
     const copied = await copyText(content);
     window.open(editFileUrl(`_data/cards/${card.id}.json`), '_blank', 'noopener');
     message(copied
-      ? `The new contents are copied. In the GitHub editor that just opened, select everything, paste, and click <strong>Commit changes</strong>. ${after}`
-      : `In the GitHub editor that just opened, replace everything with the text below and click <strong>Commit changes</strong>. ${after}
+      ? `<strong>Not saved yet.</strong> The new contents are copied. In the GitHub editor that just opened, select everything (Ctrl+A), paste (Ctrl+V), and click <strong>Commit changes</strong>. ${after}
+         To save with one click, set a GitHub token in the menu.`
+      : `<strong>Not saved yet.</strong> In the GitHub editor that just opened, replace everything with the text below and click <strong>Commit changes</strong>. ${after}
          <textarea rows="10" readonly>${escapeHTML(content)}</textarea>`, 'ok');
   } else {
     window.open(newFileUrl('_data/cards', `${card.id}.json`, content, `Add card ${card.name}`), '_blank', 'noopener');

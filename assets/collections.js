@@ -1,8 +1,10 @@
 // Collections page: search the collections and start a new one.
 import {
   loadCards, loadCollections, mathReady, cardFaces, makeFilter, escapeHTML,
-  getDraft, setDraft, ID_PATTERN, showFatal,
+  getDraft, setDraft, ID_PATTERN, showFatal, setupTokenUI,
 } from './common.js';
+
+setupTokenUI();
 
 const $ = id => document.getElementById(id);
 let collections = [], cardsById = new Map();

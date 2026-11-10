@@ -2,8 +2,10 @@
 // PNG images for ordering printed cards.
 import {
   loadCards, loadCollections, mathReady, cardFaces, escapeHTML, safeUrl, openCardDialog,
-  svgToPng, fileUrl, showFatal,
+  svgToPng, fileUrl, showFatal, setupTokenUI,
 } from './common.js';
+
+setupTokenUI();
 
 const $ = id => document.getElementById(id);
 const main = $('main');

@@ -3,7 +3,10 @@
 import {
   loadCards, loadCollections, mathReady, cardFaces, makeFilter, escapeHTML, openCardDialog,
   getDraft, setDraft, collectionFile, newFileUrl, editFileUrl, copyText, ID_PATTERN, showFatal,
+  setupTokenUI, getToken, commitFile,
 } from './common.js';
+
+setupTokenUI();
 
 const $ = id => document.getElementById(id);
 const grid = $('cards');
@@ -211,6 +214,26 @@ $('dSave').addEventListener('click', async () => {
   const content = collectionFile(draft);
   const path = `_data/collections/${draft.id}.json`;
   const after = 'The site shows the change about a minute after the commit.';
+  if (getToken()) {
+    // One click: commit directly with the token
+    $('dSave').disabled = true;
+    message('Saving…');
+    try {
+      const url = await commitFile(path, content,
+        `${draft.isNew ? 'Add' : 'Update'} collection ${draft.name}`, { mustBeNew: draft.isNew });
+      if (draft.isNew) collections.push({ id: draft.id, name: draft.name, description: draft.description, cards: [...draft.cards] });
+      draft.isNew = false;
+      message(`Saved to GitHub (<a href="${escapeHTML(url)}" target="_blank" rel="noopener">see the commit</a>). ${after}`, 'ok');
+    } catch (e) {
+      return message(escapeHTML(e.message), 'error');
+    } finally {
+      $('dSave').disabled = false;
+    }
+    draft.saved = true;
+    setDraft(draft);
+    renderDraft();
+    return;
+  }
   if (draft.isNew) {
     window.open(newFileUrl('_data/collections', `${draft.id}.json`, content, `Add collection ${draft.name}`), '_blank', 'noopener');
     message(`GitHub opened in a new tab with the file filled in. Click <strong>Commit changes</strong> there
@@ -220,8 +243,9 @@ $('dSave').addEventListener('click', async () => {
     const copied = await copyText(content);
     window.open(editFileUrl(path), '_blank', 'noopener');
     message(copied
-      ? `The new contents are copied. In the GitHub editor that just opened, select everything, paste, and click <strong>Commit changes</strong>. ${after}`
-      : `In the GitHub editor that just opened, replace everything with the text below and click <strong>Commit changes</strong>. ${after}
+      ? `<strong>Not saved yet.</strong> The new contents are copied. In the GitHub editor that just opened, select everything (Ctrl+A), paste (Ctrl+V), and click <strong>Commit changes</strong>. ${after}
+         To save with one click, set a GitHub token in the menu.`
+      : `<strong>Not saved yet.</strong> In the GitHub editor that just opened, replace everything with the text below and click <strong>Commit changes</strong>. ${after}
          <textarea rows="8" readonly>${escapeHTML(content)}</textarea>`, 'ok');
   }
   draft.saved = true;

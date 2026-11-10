@@ -68,6 +68,130 @@ export function fileUrl(path) {
   return `https://github.com/${REPO}/blob/${BRANCH}/${path}`;
 }
 
+// ---------------------------------------------------------------- GitHub token
+
+// With a fine-grained token (Contents: read and write on this repository
+// only), saving commits directly through the GitHub API. The token is kept
+// in this browser only.
+const TOKEN_KEY = 'memory-math-github-token';
+
+export function getToken() {
+  try {
+    return localStorage.getItem(TOKEN_KEY) || '';
+  } catch {
+    return '';
+  }
+}
+
+function setToken(t) {
+  try {
+    if (t) localStorage.setItem(TOKEN_KEY, t);
+    else localStorage.removeItem(TOKEN_KEY);
+  } catch { /* storage blocked: the token can't be kept */ }
+}
+
+async function api(path, opts = {}) {
+  const r = await fetch(`https://api.github.com${path}`, {
+    ...opts,
+    cache: 'no-store',
+    headers: {
+      Accept: 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      Authorization: `Bearer ${getToken()}`,
+      ...(opts.body ? { 'Content-Type': 'application/json' } : {}),
+    },
+  });
+  return { status: r.status, ok: r.ok, data: await r.json().catch(() => null) };
+}
+
+function apiError(res) {
+  if (res.status === 401) return 'GitHub did not accept the token. It may have expired: make a new one and set it under "GitHub token".';
+  if (res.status === 403 || res.status === 404) return 'The token is not allowed to change this repository. It needs "Contents: Read and write" for memory-math.';
+  return `GitHub said: ${res.data?.message || `error ${res.status}`}`;
+}
+
+// Commits one file and returns the commit's web address. With mustBeNew,
+// refuses to overwrite a file that exists.
+export async function commitFile(path, content, message, { mustBeNew = false } = {}) {
+  const current = await api(`/repos/${REPO}/contents/${path}?ref=${BRANCH}`);
+  if (current.status !== 200 && current.status !== 404) throw new Error(apiError(current));
+  if (current.status === 200 && mustBeNew) throw new Error(`${path} already exists in the repository.`);
+  let binary = '';
+  for (const b of new TextEncoder().encode(content)) binary += String.fromCharCode(b);
+  const body = { message, content: btoa(binary), branch: BRANCH };
+  if (current.status === 200) body.sha = current.data.sha;
+  const res = await api(`/repos/${REPO}/contents/${path}`, { method: 'PUT', body: JSON.stringify(body) });
+  if (!res.ok) throw new Error(apiError(res));
+  return res.data.commit.html_url;
+}
+
+// A "GitHub token" button in the menu, with a dialog to set or remove it
+export function setupTokenUI() {
+  const header = document.querySelector('.site');
+  if (!header) return;
+  const button = document.createElement('button');
+  button.className = 'token-button';
+  const dialog = document.createElement('dialog');
+  dialog.className = 'token-dialog';
+  header.append(button);
+  document.body.append(dialog);
+
+  const refresh = () => {
+    const on = !!getToken();
+    button.innerHTML = `<span class="dot${on ? ' on' : ''}" aria-hidden="true"></span>GitHub token`;
+    button.title = on ? 'Saving commits directly' : 'No token: saving opens GitHub';
+  };
+
+  const render = (msg = '', cls = '') => {
+    const on = !!getToken();
+    dialog.innerHTML = `
+      <form method="dialog" class="dialog-close"><button aria-label="Close">×</button></form>
+      <h2>GitHub token</h2>
+      <p>${on
+        ? 'A token is set in this browser, so saving a card or collection commits it directly.'
+        : 'Without a token, saving opens GitHub, where you commit (or propose) the change yourself. With a token, saving commits directly.'}</p>
+      <p class="small muted">Make a <a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">fine-grained token</a>
+        with access to only the <code>${REPO}</code> repository and the permission <strong>Contents: Read and write</strong>.
+        The token is kept in this browser only. Remove it on shared computers.</p>
+      <form class="form-grid token-form">
+        <label><span class="label">${on ? 'Replace the token' : 'Token'}</span>
+          <input type="password" name="token" placeholder="github_pat_…" autocomplete="off" spellcheck="false"></label>
+        <div class="form-actions">
+          <button class="primary" type="submit">Save token</button>
+          ${on ? '<button type="button" class="remove">Remove token</button>' : ''}
+        </div>
+        <p class="msg ${cls}" role="status">${msg}</p>
+      </form>`;
+    const form = dialog.querySelector('.token-form');
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const t = form.token.value.trim();
+      if (!t) return render('Paste the token first.', 'error');
+      const old = getToken();
+      setToken(t);
+      const user = await api('/user');
+      const repo = user.ok ? await api(`/repos/${REPO}`) : user;
+      if (!user.ok || !repo.ok) {
+        setToken(old);
+        return render(escapeHTML(apiError(user.ok ? repo : user)), 'error');
+      }
+      refresh();
+      render(`Saved. Signed in to GitHub as <strong>${escapeHTML(user.data.login)}</strong>.`, 'ok');
+    });
+    form.querySelector('.remove')?.addEventListener('click', () => {
+      setToken('');
+      refresh();
+      render('The token is removed from this browser.', 'ok');
+    });
+  };
+
+  button.addEventListener('click', () => {
+    render();
+    dialog.showModal();
+  });
+  refresh();
+}
+
 export async function copyText(text) {
   try {
     await navigator.clipboard.writeText(text);
