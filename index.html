@@ -10,10 +10,12 @@
     integrity="sha384-KKWa9jJ1MZvssLeOoXG6FiOAZfAgmzsIIfw8BXwI9+kYm0lPCbC6yTQPBC00F1/L" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjs@13.2.0/lib/browser/math.js"
     integrity="sha384-d3+I7LvDambpjs3mxCGV0oIwCXzDxj2cyVHley/ulGoS2DijbpfjYixiUSl3nGuj" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/jspdf@2.5.2/dist/jspdf.umd.min.js"
+    integrity="sha384-en/ztfPSRkGfME4KIm05joYXynqzUgbsG5nMrj/xEFAHXkeZfO3yMK8QQ+mP7p1/" crossorigin="anonymous"></script>
   <script type="module" src="assets/cards.js"></script>
 </head>
 <body>
-  <header class="site screen-only">
+  <header class="site">
     <a class="brand" href="./">Memory Math</a>
     <nav>
       <a href="./" aria-current="page">Cards</a>
@@ -22,7 +24,7 @@
     </nav>
   </header>
 
-  <main class="screen-only">
+  <main>
     <section id="draftbar" class="panel draftbar" hidden aria-label="Collection being edited">
       <div class="draft-head">
         <strong id="draftTitle">New collection</strong>
@@ -60,7 +62,7 @@
         </select></label>
       <label class="check"><input type="checkbox" id="onlySelected"> Ticked only</label>
       <div class="actions">
-        <button id="print" title="Graphs on page 1, expressions on page 2">Print overview</button>
+        <button id="pdf" title="Graphs on page 1, expressions on page 2">Download PDF</button>
         <button id="editCard" disabled>Edit card</button>
       </div>
     </div>
@@ -69,7 +71,6 @@
     <div id="cards" class="cards"><p class="empty">Loading cards…</p></div>
   </main>
 
-  <div id="printArea" class="print-only"></div>
   <dialog id="detail"></dialog>
 </body>
 </html>

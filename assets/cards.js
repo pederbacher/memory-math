@@ -1,9 +1,9 @@
-// Cards page: all cards, regex filter, printing, and editing a collection
+// Cards page: all cards, regex filter, a PDF overview, and editing a collection
 // by ticking cards (the draft bar).
 import {
   loadCards, loadCollections, mathReady, cardFaces, makeFilter, escapeHTML, openCardDialog,
   getDraft, setDraft, collectionFile, newFileUrl, editFileUrl, copyText, ID_PATTERN, showFatal,
-  setupTokenUI, getToken, commitFile,
+  setupTokenUI, getToken, commitFile, newPdf, pngBytes,
 } from './common.js';
 
 setupTokenUI();
@@ -99,24 +99,47 @@ $('q').addEventListener('input', applyFilter);
 $('scope').addEventListener('change', applyFilter);
 $('onlySelected').addEventListener('change', applyFilter);
 
-// ---------------------------------------------------------------- printing
+// ---------------------------------------------------------------- PDF overview
 
 function visibleCards() {
   return cards.filter(c => !pairs.get(c.id).hidden);
 }
 
-$('print').addEventListener('click', () => {
-  const list = visibleCards();
-  const cols = Math.max(2, Math.ceil(Math.sqrt(list.length)));
-  const page = (title, face) => `
-    <section class="print-page">
-      <h1>Memory Math</h1><h2>${title}, ${list.length} cards</h2>
-      <div class="print-grid" style="grid-template-columns: repeat(${cols}, 1fr)">
-        ${list.map(c => `<div class="tile">${cardFaces(c)[face]}</div>`).join('')}
-      </div>
-    </section>`;
-  $('printArea').innerHTML = page('Graphs', 'graph') + page('Expressions', 'expression');
-  window.print();
+// Graphs on page 1 and expressions on page 2, in the same grid
+$('pdf').addEventListener('click', async () => {
+  const btn = $('pdf'), label = btn.textContent;
+  btn.disabled = true;
+  try {
+    const list = visibleCards();
+    btn.textContent = 'Loading fonts…';
+    const doc = await newPdf();
+    const W = 210, H = 297, M = 10, inner = W - 2 * M;
+    const cols = Math.max(2, Math.ceil(Math.sqrt(list.length)));
+    const rows = Math.max(1, Math.ceil(list.length / cols));
+    const gridTop = M + 14;
+    const tile = Math.min(inner / cols, (H - M - gridTop) / rows);
+    for (const [p, [title, face]] of [['Graphs', 'graph'], ['Expressions', 'expression']].entries()) {
+      if (p) doc.addPage();
+      doc.setFont('serif', 'bold').setFontSize(16).setTextColor(0);
+      doc.text('Memory Math', M, M, { baseline: 'top' });
+      doc.setFont('sans', 'normal').setFontSize(11).setTextColor(68);
+      doc.text(`${title}, ${list.length} cards`, M, M + 8, { baseline: 'top' });
+      doc.setDrawColor(153).setLineWidth(0.2).setLineDashPattern([1, 1], 0);
+      for (const [i, c] of list.entries()) {
+        btn.textContent = `${title}: ${i + 1} of ${list.length}…`;
+        const x = M + (i % cols) * tile, y = gridTop + Math.floor(i / cols) * tile;
+        doc.addImage(await pngBytes(cardFaces(c)[face], 800), 'PNG', x, y, tile, tile);
+        doc.rect(x, y, tile, tile);
+      }
+      doc.setLineDashPattern([], 0);
+    }
+    doc.save('memory-math-overview.pdf');
+  } catch (e) {
+    alert(`Could not make the PDF: ${e.message}`);
+  } finally {
+    btn.textContent = label;
+    btn.disabled = false;
+  }
 });
 
 // ---------------------------------------------------------------- edit card

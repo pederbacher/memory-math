@@ -413,6 +413,37 @@ export async function svgToPng(svg, px = 1200) {
   }
 }
 
+// PNG bytes of an SVG, for jsPDF's addImage
+export async function pngBytes(svg, px) {
+  return new Uint8Array(await (await svgToPng(svg, px)).arrayBuffer());
+}
+
+// ---------------------------------------------------------------- PDF
+
+// DejaVu covers the Greek letters and symbols in the card texts, which the
+// fonts built into jsPDF do not
+const FONT_BASE = 'https://cdn.jsdelivr.net/npm/dejavu-fonts-ttf@2.37.3/ttf/';
+const FONTS = [
+  ['DejaVuSans.ttf', 'sans', 'normal', 'sha384-WWCI8RVJmiZvis8EpwnSyGn7cTtzGfshxkxsg5ZuL9AUFpzKg99zhn/2lkFh2+vG'],
+  ['DejaVuSerif-Bold.ttf', 'serif', 'bold', 'sha384-AjS85o+YCTwC7GOiOSeyu+ter5SSZVKv0MKK+WQ6PW8IPBtfZRdLU3Rv6dpC8+gz'],
+];
+
+// A new A4 page in mm with the fonts 'sans' (normal) and 'serif' (bold);
+// needs the jsPDF script on the page
+export async function newPdf() {
+  const doc = new jspdf.jsPDF({ unit: 'mm', format: 'a4' });
+  for (const [file, name, style, integrity] of FONTS) {
+    const res = await fetch(FONT_BASE + file, { integrity });
+    if (!res.ok) throw new Error(`could not load the font ${file}`);
+    const bytes = new Uint8Array(await res.arrayBuffer());
+    let bin = '';
+    for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
+    doc.addFileToVFS(file, btoa(bin));
+    doc.addFont(file, name, style);
+  }
+  return doc;
+}
+
 // ---------------------------------------------------------------- small helpers
 
 export function escapeHTML(s) {

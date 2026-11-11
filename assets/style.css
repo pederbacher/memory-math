@@ -286,27 +286,6 @@ dialog h2 { margin: 0; padding-right: 2.5rem; }
   .qr { width: 110px; }
 }
 
-/* ---------------------------------------------------------------- print */
-
-.print-only { display: none; }
-
-@media print {
-  /* No page margin leaves the browser no room for its own header and
-     footer (date, title, URL, page numbers); the margin is added below */
-  @page { size: A4; margin: 0; }
-  body { background: #fff; color: #000; }
-  .site, .screen-only, dialog { display: none !important; }
-  .print-only { display: block; }
-  main { padding: 0; max-width: none; }
-
-  .print-page { break-after: page; padding: 10mm 10mm 0; }
-  .print-page:last-child { break-after: auto; }
-  .print-page h1 { font-size: 16pt; margin: 0 0 2mm; }
-  .print-page h2 { font-size: 11pt; margin: 0 0 3mm; font-weight: normal; color: #444; font-family: var(--sans); }
-  .print-grid { display: grid; gap: 0; }
-  .print-grid .tile { border: .2mm dashed #999; border-radius: 0; }
-}
-
 /* ---------------------------------------------------------------- token */
 
 .token-button {

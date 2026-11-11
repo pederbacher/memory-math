@@ -2,7 +2,7 @@
 // PNG images for ordering printed cards.
 import {
   loadCards, loadCollections, mathReady, cardFaces, escapeHTML, safeUrl, openCardDialog,
-  svgToPng, fileUrl, showFatal, setupTokenUI,
+  svgToPng, fileUrl, showFatal, setupTokenUI, newPdf, pngBytes,
 } from './common.js';
 
 setupTokenUI();
@@ -78,26 +78,6 @@ function render(col, cards, missing) {
 
 // ---------------------------------------------------------------- PDF
 
-// DejaVu covers the Greek letters and symbols in the card texts, which the
-// fonts built into jsPDF do not
-const FONT_BASE = 'https://cdn.jsdelivr.net/npm/dejavu-fonts-ttf@2.37.3/ttf/';
-const FONTS = [
-  ['DejaVuSans.ttf', 'sans', 'normal', 'sha384-WWCI8RVJmiZvis8EpwnSyGn7cTtzGfshxkxsg5ZuL9AUFpzKg99zhn/2lkFh2+vG'],
-  ['DejaVuSerif-Bold.ttf', 'serif', 'bold', 'sha384-AjS85o+YCTwC7GOiOSeyu+ter5SSZVKv0MKK+WQ6PW8IPBtfZRdLU3Rv6dpC8+gz'],
-];
-
-async function addFonts(doc) {
-  for (const [file, name, style, integrity] of FONTS) {
-    const res = await fetch(FONT_BASE + file, { integrity });
-    if (!res.ok) throw new Error(`could not load the font ${file}`);
-    const bytes = new Uint8Array(await res.arrayBuffer());
-    let bin = '';
-    for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
-    doc.addFileToVFS(file, btoa(bin));
-    doc.addFont(file, name, style);
-  }
-}
-
 // A QR code drawn as black squares, size mm wide, top left at (x, y)
 function drawQr(doc, text, x, y, size, level) {
   const qr = qrcode(0, level);
@@ -112,22 +92,18 @@ function drawQr(doc, text, x, y, size, level) {
   }
 }
 
-const pngBytes = async svg => new Uint8Array(await (await svgToPng(svg, 600)).arrayBuffer());
-
 // A4 in mm: description and QR code, then one row per card with graph,
-// expression, explanation and a QR code of its link
+// expression and explanation
 async function downloadPdf(col, cards, url) {
   const btn = $('pdf');
   btn.disabled = true;
   try {
     $('pdfMsg').textContent = 'Loading fonts…';
-    const doc = new jspdf.jsPDF({ unit: 'mm', format: 'a4' });
-    await addFonts(doc);
+    const doc = await newPdf();
     const W = 210, H = 297, M = 10, TOP = 12, BOTTOM = 12;
     const inner = W - 2 * M;
     const face = inner * 0.2, pad = 1.5, tile = face - 2 * pad;
-    const qrCol = 17, qrSize = 14;
-    const textX = M + 2 * face + 4, textW = inner - 2 * face - qrCol - 4 - pad;
+    const textX = M + 2 * face + 4, textW = inner - 2 * face - 4 - pad;
 
     // Header
     const headQr = 30, headW = inner - headQr - 6;
@@ -165,7 +141,7 @@ async function downloadPdf(col, cards, url) {
       const ty = y + (rowH - tile) / 2;
       for (const [k, svg] of [faces.graph, faces.expression].entries()) {
         const x = M + k * face + pad;
-        doc.addImage(await pngBytes(svg), 'PNG', x, ty, tile, tile);
+        doc.addImage(await pngBytes(svg, 600), 'PNG', x, ty, tile, tile);
         doc.setDrawColor(187).setLineWidth(0.2).rect(x, ty, tile, tile);
       }
 
@@ -180,9 +156,6 @@ async function downloadPdf(col, cards, url) {
         doc.setFontSize(8);
         doc.text(linkLines, textX, t, { baseline: 'top', lineHeightFactor: 1.25 });
         doc.link(textX, t, textW, linkLines.length * lh(8), { url: link });
-        const qx = W - M - pad - qrSize, qy = y + (rowH - qrSize) / 2;
-        drawQr(doc, link, qx, qy, qrSize, 'L');
-        doc.link(qx, qy, qrSize, qrSize, { url: link });
       }
       y += rowH;
     }
