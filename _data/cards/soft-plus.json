@@ -1,0 +1,9 @@
+{
+  "name": "Soft Plus",
+  "expression": "log(1+exp(x))",
+  "tex": "\\log(1+\\exp(x))",
+  "xmin": -10,
+  "xmax": 10,
+  "text": "Differentiable approximate to max(x,0)",
+  "wikipedia": "https://www.geeksforgeeks.org/deep-learning/softplus-function-in-neural-network/"
+}
