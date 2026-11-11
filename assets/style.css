@@ -300,28 +300,11 @@ dialog h2 { margin: 0; padding-right: 2.5rem; }
   main { padding: 0; max-width: none; }
 
   .print-page { break-after: page; padding: 10mm 10mm 0; }
-  .print-page.long { padding-bottom: 0; }
   .print-page:last-child { break-after: auto; }
   .print-page h1 { font-size: 16pt; margin: 0 0 2mm; }
   .print-page h2 { font-size: 11pt; margin: 0 0 3mm; font-weight: normal; color: #444; font-family: var(--sans); }
   .print-grid { display: grid; gap: 0; }
   .print-grid .tile { border: .2mm dashed #999; border-radius: 0; }
-
-  .print-head { display: grid; grid-template-columns: 1fr 30mm; gap: 6mm; }
-  /* Empty header and footer rows repeat on every page of a long table,
-     giving each page its top and bottom margin */
-  .print-table .page-gap td { height: 8mm; padding: 0; }
-  .print-head p { margin: 1mm 0 0; font-size: 10pt; }
-  .print-head .qr { width: 30mm; border: none; padding: 0; }
-  /* Graph and expression columns 20% each, the explanation gets the rest */
-  .print-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-  .print-table col.face { width: 20%; }
-  .print-table tr { break-inside: avoid; }
-  .print-table td { padding: 1.5mm; vertical-align: middle; }
-  .print-table .tile { border: .2mm solid #bbb; }
-  .print-table .explain { padding-left: 4mm; font-size: 9.5pt; }
-  .explain strong { font-family: var(--serif); font-size: 11pt; }
-  .explain a { color: #000; word-break: break-all; font-size: 8pt; }
 }
 
 /* ---------------------------------------------------------------- token */
